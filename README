@@ -1,0 +1,40 @@
+Fluoride Bluetooth stack
+
+1.Download source:
+cd ~/bt-fucker
+git clone https://github.com/Nicholas1126/bt-fucker.git
+
+2.Install dependencies (require sudo access):
+cd ~/bt-fucker/bt
+build/install_deps.sh
+
+3.Update third party dependencies mamnully:
+cd ~/bt-fucker/bt
+mkdir third_party
+cd third_party
+git clone https://github.com/google/googletest.git
+git clone https://android.googlesource.com/platform/external/aac
+git clone https://android.googlesource.com/platform/external/libchrome
+git clone https://android.googlesource.com/platform/external/libldac
+git clone https://android.googlesource.com/platform/external/modp_b64
+git clone https://android.googlesource.com/platform/external/tinyxml2
+git clone https://android.googlesource.com/platform/hardware/libhardware
+
+After update, checkout branch please.
+
+4.Generate your build files:
+cd ~/bt-fucker/bt
+gn gen out/Default
+vi out/Default/build.ninja
+
+Set version to 1.5.1
+
+5.Build:
+cd ~/bt-fucker/bt
+ninja -C out/Default all
+
+This will build all targets (the shared library, executables, tests, etc) and put them in out/Default. To build an individual target, replace “all” with the target of your choice, e.g. ninja -C out/Default net_test_osi.
+
+6.Run:
+cd ~/bt-fucker/bt/out/Default
+LD_LIBRARY_PATH=./ ./bluetoothtbd -create-ipc-socket=bt-fucker
